@@ -15,7 +15,9 @@ jobs:
         run: docker build -t veille_gitaction .
 
       - name: Log in to Docker registry
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY_URL }}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
 
       - name: Push Docker image to registry
-        run: docker push veille_gitaction
+        run: |
+          docker tag veille_gitaction cgohitema/veille_gitaction
+          docker push cgohitema/veille_gitaction
