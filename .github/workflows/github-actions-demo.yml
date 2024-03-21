@@ -1,30 +1,27 @@
-name: GitHub Actions Demo
-on: [push]
+name: Build and Push Docker Image
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  Explore-GitHub-Actions:
+  build-and-push-image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false # Changez à 'true' si vous voulez pousser l'image
-          tags: your-registry/your-image-name:latest
-          build-args: |
-            # Si nécessaire, vous pouvez ajouter des arguments de build ici
+        run: docker build -t veille_gitaction .
+
+      - name: Tag Docker image
+        run: docker tag veille_gitaction ${{ secrets.DOCKER_REGISTRY_URL }}/veille_gitaction
+
       - name: Push Docker image to registry
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true # Changez à 'false' si vous ne voulez pas pousser l'image
-          tags: your-registry/your-image-name:latest
-          build-args: |
-            # Si nécessaire, vous pouvez ajouter des arguments de build ici
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker push ${{ secrets.DOCKER_REGISTRY_URL }}/veille_gitaction
