@@ -20,8 +20,5 @@ jobs:
       - name: Build Docker image
         run: docker build -t veille_gitaction .
 
-      - name: Tag Docker image
-        run: docker tag veille_gitaction ${{ secrets.DOCKER_REGISTRY_URL }}/veille_gitaction
-
       - name: Push Docker image to registry
         run: docker push ${{ secrets.DOCKER_REGISTRY_URL }}/veille_gitaction
