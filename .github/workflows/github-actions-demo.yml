@@ -22,8 +22,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push image to Docker Hub
         run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/veille_gitaction:latest ${{ secrets.DOCKER_USERNAME }}/veille_gitaction:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/veille_gitaction:latest  
+          docker tag cgohitema/veille_gitaction:latest cgohitema/veille_gitaction:latest
+          docker push cgohitema/veille_gitaction:latest  
           
           
           
